@@ -22,7 +22,7 @@ def main():
     times = cursor.fetchall()
     new_times = [i[0] for i in times]
 
-    print(new_times[0])
+  
   
 
     with open('ChromeHistory.csv','w',newline='',encoding='utf-8') as myfile:
