@@ -3,6 +3,17 @@ from tkinter import ttk
 import csv
 from tkinter import filedialog
 from tkinter import *
+import platform
+import winreg as wrg
+import os.path
+import socket
+import re
+import uuid
+import json
+import psutil
+import logging
+import cpuinfo
+import wmi
 
 
 
@@ -89,7 +100,52 @@ status_label = tk.Label(tab3, text="", padx=20, pady=10)
 status_label.pack()
 #tab1
 
-#tab2 
+#tab2
+operating_system=tk.Label(tab2,text="Operating system: " + str(platform.system()),font=("Helvetica 12",10))
+operating_system.place(x=0,y=0)
+
+computer_name=tk.Label(tab2,text="Computer name: " + str(socket.gethostname()),font=("Helvetica 12",10))
+computer_name.place(x=0,y=30)
+
+user=tk.Label(tab2,text="Connected User: " + str(os.getlogin()),font=("Helvetica 12",10))
+user.place(x=0,y=60)
+
+ip_address=tk.Label(tab2,text="Ip_address: " + str(socket.gethostbyname(socket.gethostname())),font=("Helvetica 12",10))
+ip_address.place(x=0,y=90)
+
+mac_address=tk.Label(tab2,text="MAC_address: " + str(':'.join(re.findall('..', '%012x' % uuid.getnode()))),font=("Helvetica 12",10))
+mac_address.place(x=0,y=120)
+
+processor=tk.Label(tab2,text="Processor: " + str(cpuinfo.get_cpu_info()['brand_raw']),font=("Helvetica 12",10))
+processor.place(x=0,y=150)
+
+memory=tk.Label(tab2,text="Memory: " + str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB",font=("Helvetica 12",10))
+memory.place(x=0,y=180)
+
+partitions = psutil.disk_partitions()
+
+partition_info=tk.Label(tab2,text="Partion info: " + str(partitions[0]),font=("Helvetica 12",10))
+partition_info.place(x=0,y=210)
+
+hard_drive_info = psutil.disk_usage('/')
+hardrive_total=tk.Label(tab2,text="Hard disk total memory: " + str((hard_drive_info[0] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total.place(x=0,y=240)
+hardrive_total=tk.Label(tab2,text="Hard disk used memory: " + str((hard_drive_info[1] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total.place(x=0,y=270)
+hardrive_total=tk.Label(tab2,text="Hard disk free memory: " + str((hard_drive_info[2] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total.place(x=0,y=300)
+
+controllers = wmi.WMI().Win32_VideoController()
+graphics_card = "" 
+for controller in controllers:
+    graphics_card = str( controller.wmi_property('Name').value)
+
+GPU=tk.Label(tab2,text="Graphics Card: " + str(graphics_card),font=("Helvetica 12",10))
+GPU.place(x=0,y=330)
+
+
+
+
 
 # tab3 
 user_input = StringVar()
