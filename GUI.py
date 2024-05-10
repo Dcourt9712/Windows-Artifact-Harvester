@@ -14,6 +14,7 @@ import psutil
 import logging
 import cpuinfo
 import wmi
+import math
 
 
 
@@ -99,6 +100,45 @@ tree.pack(padx=20, pady=20, fill="both", expand=True)
 status_label = tk.Label(tab3, text="", padx=20, pady=10)
 status_label.pack()
 #tab1
+def script_clicked():
+    if chrome_clicked.get():
+        os.system(" python3 chrome.py")
+
+    if app_clicked.get():
+        os.system(" python3 InstalledApps.py")
+    
+
+    if MRU_clicked.get():
+        os.system(" python3 MRU.py")
+
+    if network_clicked.get():
+        os.system(" python3 Networks.py")
+        
+
+
+var = IntVar()
+welcome_label =tk.Label(tab1,text="Welcome to Windows-Artifact-Harvester",font=("Helvetica 12",30))
+welcome_label.place(x=240, y=0)
+
+chrome_clicked = tk.IntVar()
+chrome_check = Checkbutton(tab1, text="Chrome", variable=chrome_clicked)
+chrome_check.place(x = 0, y = 60)
+
+app_clicked = tk.IntVar()
+Installed_apps_check = Checkbutton(tab1, text="Installed_Apps", variable=app_clicked)
+Installed_apps_check.place(x = 0, y = 90)
+
+MRU_clicked = tk.IntVar()
+MRU_check = Checkbutton(tab1, text="MRU(Most Recently viewed)",variable=MRU_clicked)
+MRU_check.place(x = 0, y = 120)
+
+network_clicked = tk.IntVar()
+Networks_check = Checkbutton(tab1, text="Network information", variable=network_clicked)
+Networks_check.place(x = 0, y = 150)
+
+
+run_scripts_button = tk.Button(tab1, text="Run Scripts", command= script_clicked)
+run_scripts_button.place(x=0,y=180)
 
 #tab2
 operating_system=tk.Label(tab2,text="Operating system: " + str(platform.system()),font=("Helvetica 12",10))
@@ -128,11 +168,11 @@ partition_info=tk.Label(tab2,text="Partion info: " + str(partitions[0]),font=("H
 partition_info.place(x=0,y=210)
 
 hard_drive_info = psutil.disk_usage('/')
-hardrive_total=tk.Label(tab2,text="Hard disk total memory: " + str((hard_drive_info[0] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total=tk.Label(tab2,text="Hard disk total memory: " + str(math.trunc((hard_drive_info[0] / (2**30)))) + " GBS",font=("Helvetica 12",10))
 hardrive_total.place(x=0,y=240)
-hardrive_total=tk.Label(tab2,text="Hard disk used memory: " + str((hard_drive_info[1] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total=tk.Label(tab2,text="Hard disk used memory: " + str(math.trunc((hard_drive_info[1] / (2**30)))) + " GBS",font=("Helvetica 12",10))
 hardrive_total.place(x=0,y=270)
-hardrive_total=tk.Label(tab2,text="Hard disk free memory: " + str((hard_drive_info[2] / (2**30))) + " GBS",font=("Helvetica 12",10))
+hardrive_total=tk.Label(tab2,text="Hard disk free memory: " + str(math.trunc((hard_drive_info[2] / (2**30)))) + " GBS",font=("Helvetica 12",10))
 hardrive_total.place(x=0,y=300)
 
 controllers = wmi.WMI().Win32_VideoController()
